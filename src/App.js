@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { ChatManager, TokenProvider } from "@pusher/chatkit-client";
 import './App.css';
 
@@ -70,14 +70,32 @@ class MessageList extends Component {
         }
       }
     });
+    this.props.autoScroll && this.scrollToBottom();
   }
+
+  componentDidUpdate() {
+    this.props.autoScroll && this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    this.bottom.scrollIntoView({ behavior: "smooth" });
+  };
 
   /* We're using the Render Prop pattern here so that structure and styling can be
      handled by the user. This just provides the data, and means the user will create
      a 'function as a child' to render out components that have access to the data. */
 
   render() {
-    return this.props.children(this.state.messages);
+    return (
+      this.props.autoScroll
+      ? <Fragment>
+          {this.props.children(this.state.messages)}
+          <span style={{ opacity: 0, width: 0, height: 0 }} ref={el => { this.bottom = el; }}>
+            Bottom
+          </span>
+        </Fragment>
+      : this.props.children(this.state.messages)
+    );
   }
 }
 
@@ -130,7 +148,7 @@ const App = () => (
   <Chatkit userId="ADD YOUR USER ID">
     <div className="container">
       <div>
-        <MessageList>
+        <MessageList autoScroll>
           { messages => messages.map((message, index) => (
             <div key={index} className="message">
               { message.parts.map((part, index) => (
