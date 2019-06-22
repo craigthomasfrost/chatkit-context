@@ -69,8 +69,10 @@ class MessageList extends Component {
           });
         }
       }
+    }).then(() => {
+      this.setState({ userId: currentUser.id });
+      this.props.autoScroll && this.scrollToBottom();
     });
-    this.props.autoScroll && this.scrollToBottom();
   }
 
   componentDidUpdate() {
@@ -86,16 +88,14 @@ class MessageList extends Component {
      a 'function as a child' to render out components that have access to the data. */
 
   render() {
-    return (
-      this.props.autoScroll
-      ? <Fragment>
-          {this.props.children(this.state.messages)}
-          <span style={{ opacity: 0, width: 0, height: 0 }} ref={el => { this.bottom = el; }}>
-            Bottom
-          </span>
-        </Fragment>
-      : this.props.children(this.state.messages)
-    );
+    return this.props.autoScroll ? (
+      <Fragment>
+        {this.props.children(this.state)}
+        <span style={{ opacity: 0, width: 0, height: 0 }} ref={el => { this.bottom = el; }}>
+          Bottom
+        </span>
+      </Fragment>
+    ) : this.props.children(this.state);
   }
 }
 
@@ -120,6 +120,7 @@ class SendMessage extends Component {
 
   onSubmit = event => {
     event.preventDefault();
+    if (!this.state.message) return;
     const currentUser = this.context.currentUser;
     currentUser.sendSimpleMessage({
       roomId: currentUser.rooms[0].id,
@@ -149,8 +150,8 @@ const App = () => (
     <div className="container">
       <div>
         <MessageList autoScroll>
-          { messages => messages.map((message, index) => (
-            <div key={index} className="message">
+          { ({ messages, userId }) => messages.map((message, index) => (
+            <div key={index} className={`message ${userId === message.sender.id ? 'message--own' : null}`}>
               { message.parts.map((part, index) => (
                 <div key={index}>{ part.payload.content }</div>
               ))}
