@@ -73,7 +73,11 @@ const App = () => (
                   </label>
                 )}
               </SendAttachment>
-              <button onClick={onSubmit}>Send</button>
+              <button onClick={onSubmit} className={styles.icon}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#4E42FF" />
+                </svg>
+              </button>
             </form>
           );
         }}

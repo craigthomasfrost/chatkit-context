@@ -73,23 +73,13 @@
     background: #EBEDEF;
 }
 
-.form > button {
-    background: #4E42FF;
-    color: #FFFFFF;
-    cursor: pointer;
-}
-
-.form > button:hover {
-    background: #2E1FFF;
-}
-
 input[type="file"] {
     display: none;
 }
 
 .icon {
     display: block;
-    margin: 0 8px;
+    margin-left: 8px;
     padding: 8px;
     border-radius: 8px;
     cursor: pointer;
