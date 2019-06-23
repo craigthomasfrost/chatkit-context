@@ -19,7 +19,6 @@ class MessageList extends Component {
         roomId: currentUser.rooms[0].id,
         hooks: {
           onMessage: message => {
-            console.log(message);
             this.setState({
               messages: [...this.state.messages, message],
             });

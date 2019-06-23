@@ -6,7 +6,7 @@ import {
   SendMessage,
   SendAttachment,
 } from './chatkit-context';
-import { Image, AttachmentIcon, SendIcon } from './components';
+import { AttachmentIcon, SendIcon, Message } from './components';
 
 /* Here, we can use a functional component because the state we actually need is
    kept in the relevant Render Prop components. As you can see, components like
@@ -23,23 +23,7 @@ const App = () => (
         <MessageList autoScroll>
           {({ messages, userId }) =>
             messages.map((message, index) => (
-              <div
-                key={index}
-                className={`${styles.message} ${
-                  userId === message.sender.id ? styles.messageOwn : null
-                }`}
-              >
-                {message.parts.map((part, index) => {
-                  if (part.payload.type.includes('image')) {
-                    return <Image payload={part.payload} key={index} />;
-                  }
-                  return (
-                    <div key={index} className={styles.messageText}>
-                      {part.payload.content}
-                    </div>
-                  );
-                })}
-              </div>
+              <Message message={message} userId={userId} key={index} />
             ))
           }
         </MessageList>
