@@ -11,10 +11,10 @@ class Chatkit extends Component {
 
   componentDidMount() {
     new ChatManager({
-      instanceLocator: 'ADD YOUR INSTANCE LOCATOR',
+      instanceLocator: this.props.instanceLocator,
       userId: this.props.userId,
       tokenProvider: new TokenProvider({
-        url: 'ADD YOUR TOKEN PROVIDER URL',
+        url: this.props.tokenProvider,
       }),
     })
       .connect()
